@@ -19,3 +19,4 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pigeon: 0.1.21
+publish_to: none

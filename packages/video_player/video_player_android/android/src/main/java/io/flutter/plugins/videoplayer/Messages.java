@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.List;
 /** Generated class from Pigeon. */
 @SuppressWarnings({"unused", "unchecked", "CodeBlock2Expr", "RedundantSuppression"})
 public class Messages {
@@ -377,6 +377,160 @@ public class Messages {
     }
   }
 
+  public static class QualitiesListMessage {
+    private @NonNull Long textureId;
+
+    public @NonNull Long getTextureId() {
+      return textureId;
+    }
+
+    public void setTextureId(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"textureId\" is null.");
+      }
+      this.textureId = setterArg;
+    }
+
+    private @NonNull List qualities;
+
+    public @NonNull List getQualities() {
+      return qualities;
+    }
+
+    public void setQualities(@NonNull List setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"position\" is null.");
+      }
+      this.qualities = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private QualitiesListMessage() {}
+
+    public static class Builder {
+      private @Nullable Long textureId;
+
+      public @NonNull Builder setTextureId(@NonNull Long setterArg) {
+        this.textureId = setterArg;
+        return this;
+      }
+
+      private @Nullable List qualities;
+
+      public @NonNull Builder setQualities(@NonNull List setterArg) {
+        this.qualities = setterArg;
+        return this;
+      }
+
+      public @NonNull QualitiesListMessage build() {
+        QualitiesListMessage pigeonReturn = new QualitiesListMessage();
+        pigeonReturn.setTextureId(textureId);
+        pigeonReturn.setQualities(qualities);
+        return pigeonReturn;
+      }
+    }
+
+    @NonNull
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("textureId", textureId);
+      toMapResult.put("qualities", qualities);
+      return toMapResult;
+    }
+
+    static @NonNull QualitiesListMessage fromMap(@NonNull Map<String, Object> map) {
+      QualitiesListMessage pigeonResult = new QualitiesListMessage();
+      Object textureId = map.get("textureId");
+      pigeonResult.setTextureId(
+          (textureId == null)
+              ? null
+              : ((textureId instanceof Integer) ? (Integer) textureId : (Long) textureId));
+      Object qualities = map.get("qualities");
+      pigeonResult.setQualities(
+          (qualities == null)
+              ? null
+              : ((qualities instanceof List) ? (List) qualities : (List) qualities));
+      return pigeonResult;
+    }
+  }
+
+  public static class QualityMessage {
+    private @NonNull Long textureId;
+
+    public @NonNull Long getTextureId() {
+      return textureId;
+    }
+
+    public void setTextureId(@NonNull Long setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"textureId\" is null.");
+      }
+      this.textureId = setterArg;
+    }
+
+    private @NonNull Integer quality;
+
+    public @NonNull Integer getQuality() {
+      return quality;
+    }
+
+    public void setQuality(@NonNull Integer setterArg) {
+      if (setterArg == null) {
+        throw new IllegalStateException("Nonnull field \"quality\" is null.");
+      }
+      this.quality = setterArg;
+    }
+
+    /** Constructor is private to enforce null safety; use Builder. */
+    private QualityMessage() {}
+
+    public static class Builder {
+      private @Nullable Long textureId;
+
+      public @NonNull Builder setTextureId(@NonNull Long setterArg) {
+        this.textureId = setterArg;
+        return this;
+      }
+
+      private @Nullable Integer quality;
+
+      public @NonNull Builder setQuality(@NonNull Integer setterArg) {
+        this.quality = setterArg;
+        return this;
+      }
+
+      public @NonNull QualityMessage build() {
+        QualityMessage pigeonReturn = new QualityMessage();
+        pigeonReturn.setTextureId(textureId);
+        pigeonReturn.setQuality(quality);
+        return pigeonReturn;
+      }
+    }
+
+    @NonNull
+    Map<String, Object> toMap() {
+      Map<String, Object> toMapResult = new HashMap<>();
+      toMapResult.put("textureId", textureId);
+      toMapResult.put("quality", quality);
+      return toMapResult;
+    }
+
+    static @NonNull QualityMessage fromMap(@NonNull Map<String, Object> map) {
+      QualityMessage pigeonResult = new QualityMessage();
+      Object textureId = map.get("textureId");
+      pigeonResult.setTextureId(
+          (textureId == null)
+              ? null
+              : ((textureId instanceof Integer) ? (Integer) textureId : (Long) textureId));
+      Object quality = map.get("quality");
+      pigeonResult.setQuality(
+          (quality == null)
+              ? null
+              : ((quality instanceof Integer) ? (Integer) quality : (Integer) quality));
+      return pigeonResult;
+    }
+  }
+
   /** Generated class from Pigeon that represents data sent in messages. */
   public static class CreateMessage {
     private @Nullable String asset;
@@ -585,8 +739,14 @@ public class Messages {
 
         case (byte) 134:
           return VolumeMessage.fromMap((Map<String, Object>) readValue(buffer));
+         
+        case (byte) 201:
+          return QualitiesListMessage.fromMap((Map<String, Object>) readValue(buffer));
 
-        default:
+        case (byte) 202:
+          return QualityMessage.fromMap((Map<String, Object>) readValue(buffer));
+
+          default:
           return super.readValueOfType(type, buffer);
       }
     }
@@ -614,6 +774,12 @@ public class Messages {
       } else if (value instanceof VolumeMessage) {
         stream.write(134);
         writeValue(stream, ((VolumeMessage) value).toMap());
+      } else if (value instanceof QualitiesListMessage) {
+        stream.write(201);
+        writeValue(stream, ((QualitiesListMessage) value).toMap());
+      } else if (value instanceof QualityMessage) {
+        stream.write(202);
+        writeValue(stream, ((QualityMessage) value).toMap());
       } else {
         super.writeValue(stream, value);
       }
@@ -639,6 +805,11 @@ public class Messages {
 
     @NonNull
     PositionMessage position(@NonNull TextureMessage msg);
+
+    @NonNull
+    QualitiesListMessage qualities(@NonNull TextureMessage msg);
+
+    void setQuality(@NonNull QualityMessage msg);
 
     void seekTo(@NonNull PositionMessage msg);
 
@@ -853,6 +1024,58 @@ public class Messages {
           channel.setMessageHandler(null);
         }
       }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(
+                binaryMessenger, "dev.flutter.pigeon.AndroidVideoPlayerApi.qualities", getCodec());
+        if (api != null) {
+          channel.setMessageHandler(
+              (message, reply) -> {
+                Map<String, Object> wrapped = new HashMap<>();
+                try {
+                  ArrayList<Object> args = (ArrayList<Object>) message;
+                  TextureMessage msgArg = (TextureMessage) args.get(0);
+                  if (msgArg == null) {
+                    throw new NullPointerException("msgArg unexpectedly null.");
+                  }
+                  QualitiesListMessage output = api.qualities(msgArg);
+                  wrapped.put("result", output);
+                } catch (Error | RuntimeException exception) {
+                  wrapped.put("error", wrapError(exception));
+                }
+                reply.reply(wrapped);
+              });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }
+      {
+        BasicMessageChannel<Object> channel =
+            new BasicMessageChannel<>(
+                binaryMessenger,
+                "dev.flutter.pigeon.AndroidVideoPlayerApi.setQuality",
+                getCodec());
+        if (api != null) {
+          channel.setMessageHandler(
+              (message, reply) -> {
+                Map<String, Object> wrapped = new HashMap<>();
+                try {
+                  ArrayList<Object> args = (ArrayList<Object>) message;
+                  QualityMessage msgArg = (QualityMessage) args.get(0);
+                  if (msgArg == null) {
+                    throw new NullPointerException("msgArg unexpectedly null.");
+                  }
+                  api.setQuality(msgArg);
+                  wrapped.put("result", null);
+                } catch (Error | RuntimeException exception) {
+                  wrapped.put("error", wrapError(exception));
+                }
+                reply.reply(wrapped);
+              });
+        } else {
+          channel.setMessageHandler(null);
+        }
+      }             
       {
         BasicMessageChannel<Object> channel =
             new BasicMessageChannel<>(

@@ -19,9 +19,12 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  video_player_platform_interface: ">=4.2.0 <6.0.0"
+  # video_player_platform_interface: ">=4.2.0 <6.0.0"
+  video_player_platform_interface: 
+    path: ../video_player_platform_interface
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pigeon: ^2.0.1
+publish_to: none

@@ -541,6 +541,22 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     return await _videoPlayerPlatform.getPosition(_textureId);
   }
 
+  /// The qualities of the current video. - Added by Sundara Kaku
+  Future<List?> get qualities async {
+    if (_isDisposed) {
+      return null;
+    }
+    return await _videoPlayerPlatform.getQualities(_textureId);
+  }
+
+  Future<void> setQuality(int quality) async {
+    if (quality < 0 || quality > 1080) {
+      return;
+    }
+
+    await _videoPlayerPlatform.setQuality(_textureId, quality);
+  }
+
   /// Sets the video's current timestamp to be at [moment]. The next
   /// time the video is played it will resume from the given [moment].
   ///

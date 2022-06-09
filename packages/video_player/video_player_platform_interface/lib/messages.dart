@@ -130,6 +130,25 @@ class PositionMessage {
   }
 }
 
+class QualityMessage {
+  int? textureId;
+  int? quality;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['textureId'] = textureId;
+    pigeonMap['quality'] = quality;
+    return pigeonMap;
+  }
+
+  static QualityMessage decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return QualityMessage()
+      ..textureId = pigeonMap['textureId'] as int?
+      ..quality = pigeonMap['quality'] as int?;
+  }
+}
+
 class MixWithOthersMessage {
   bool? mixWithOthers;
 
@@ -344,6 +363,31 @@ class VideoPlayerApi {
       );
     } else {
       return PositionMessage.decode(replyMap['result']!);
+    }
+  }
+
+  Future<void> setQuality(QualityMessage arg) async {
+    final Object encoded = arg.encode();
+    const BasicMessageChannel<Object?> channel = BasicMessageChannel<Object?>(
+        'dev.flutter.pigeon.VideoPlayerApi.setQuality', StandardMessageCodec());
+    final Map<Object?, Object?>? replyMap =
+        await channel.send(encoded) as Map<Object?, Object?>?;
+    if (replyMap == null) {
+      throw PlatformException(
+        code: 'channel-error',
+        message: 'Unable to establish connection on channel.',
+        details: null,
+      );
+    } else if (replyMap['error'] != null) {
+      final Map<Object?, Object?> error =
+          replyMap['error'] as Map<Object?, Object?>;
+      throw PlatformException(
+        code: error['code'] as String,
+        message: error['message'] as String?,
+        details: error['details'],
+      );
+    } else {
+      // noop
     }
   }
 

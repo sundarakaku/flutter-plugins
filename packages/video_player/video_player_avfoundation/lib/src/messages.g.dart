@@ -132,6 +132,50 @@ class PositionMessage {
   }
 }
 
+class QualitiesListMessage {
+  QualitiesListMessage({required this.textureId, required this.qualities});
+
+  int textureId;
+  List qualities;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['textureId'] = textureId;
+    pigeonMap['qualities'] = qualities;
+    return pigeonMap;
+  }
+
+  static QualitiesListMessage decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return QualitiesListMessage(
+      textureId: pigeonMap['textureId']! as int,
+      qualities: pigeonMap['qualities']! as List,
+    );
+  }
+}
+
+class QualityMessage {
+  QualityMessage({required this.textureId, required this.quality});
+
+  int textureId;
+  int quality;
+
+  Object encode() {
+    final Map<Object?, Object?> pigeonMap = <Object?, Object?>{};
+    pigeonMap['textureId'] = textureId;
+    pigeonMap['quality'] = quality;
+    return pigeonMap;
+  }
+
+  static QualityMessage decode(Object message) {
+    final Map<Object?, Object?> pigeonMap = message as Map<Object?, Object?>;
+    return QualityMessage(
+      textureId: pigeonMap['textureId']! as int,
+      quality: pigeonMap['quality']! as int,
+    );
+  }
+}
+
 class CreateMessage {
   CreateMessage({
     this.asset,
@@ -216,6 +260,12 @@ class _AVFoundationVideoPlayerApiCodec extends StandardMessageCodec {
     } else if (value is VolumeMessage) {
       buffer.putUint8(134);
       writeValue(buffer, value.encode());
+    } else if (value is QualitiesListMessage) {
+      buffer.putUint8(201);
+      writeValue(buffer, value.encode());
+    } else if (value is QualityMessage) {
+      buffer.putUint8(202);
+      writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
     }
@@ -244,6 +294,12 @@ class _AVFoundationVideoPlayerApiCodec extends StandardMessageCodec {
 
       case 134:
         return VolumeMessage.decode(readValue(buffer)!);
+
+      case 201:
+        return QualitiesListMessage.decode(readValue(buffer)!);
+
+      case 202:
+        return QualityMessage.decode(readValue(buffer)!);
 
       default:
         return super.readValueOfType(type, buffer);

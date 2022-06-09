@@ -117,6 +117,21 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
     return Duration(milliseconds: response.position);
   }
 
+    @override
+  Future<List> getQualities(int textureId) async {
+    final QualitiesListMessage response =
+        await _api.qualities(TextureMessage(textureId: textureId));
+    return response.qualities;
+  }
+
+  @override
+  Future<void> setQuality(int textureId, int quality) {
+    return _api.setQuality(QualityMessage(
+      textureId: textureId,
+      quality: quality,
+    ));
+  }
+
   @override
   Stream<VideoEvent> videoEventsFor(int textureId) {
     return _eventChannelFor(textureId)

@@ -26,6 +26,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
+import io.flutter.plugins.videoplayer.Messages.QualitiesListMessage;
+import io.flutter.plugins.videoplayer.Messages.QualityMessage;
+
 /** Android platform implementation of the VideoPlayerPlugin. */
 public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
   private static final String TAG = "VideoPlayerPlugin";
@@ -194,6 +197,22 @@ public class VideoPlayerPlugin implements FlutterPlugin, AndroidVideoPlayerApi {
             .build();
     player.sendBufferingUpdate();
     return result;
+  }
+
+  public QualitiesListMessage qualities(TextureMessage arg) {
+    VideoPlayer player = videoPlayers.get(arg.getTextureId());
+    QualitiesListMessage result =
+        new QualitiesListMessage.Builder()
+            .setQualities(player.getQualities())
+            .setTextureId(arg.getTextureId())
+            .build();
+    player.sendBufferingUpdate();
+    return result;
+  }
+
+  public void setQuality(QualityMessage arg) {
+    VideoPlayer player = videoPlayers.get(arg.getTextureId());
+    player.setQuality(arg.getQuality());
   }
 
   public void seekTo(PositionMessage arg) {
