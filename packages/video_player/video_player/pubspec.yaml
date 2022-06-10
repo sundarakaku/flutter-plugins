@@ -33,7 +33,7 @@ dependencies:
   #   path: packages/video_player/video_player_avfoundation
   video_player_platform_interface: 
     url: https://github.com/sundarakaku/flutter-plugins.git
-    ref: sundar-develop-video-player
+    ref: sundar-develop-video-player-interface
     path: packages/video_player/video_player_platform_interface
   # video_player_web:
   #   url: https://github.com/sundarakaku/flutter-plugins.git
