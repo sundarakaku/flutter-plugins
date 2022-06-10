@@ -14,32 +14,31 @@ flutter:
     platforms:
       android:
         default_package: video_player_android
-      ios:
-        default_package: video_player_avfoundation
-      web:
-        default_package: video_player_web
+      # ios:
+      #   default_package: video_player_avfoundation
+      # web:
+      #   default_package: video_player_web
 
 dependencies:
   flutter:
     sdk: flutter
   html: ^0.15.0
-  # video_player_android: ^2.3.5
   video_player_android:
     url: https://github.com/sundarakaku/flutter-plugins.git
     ref: sundar-develop-video-player
     path: packages/video_player/video_player_android
-  video_player_avfoundation:
-    url: https://github.com/sundarakaku/flutter-plugins.git
-    ref: sundar-develop-video-player
-    path: packages/video_player/video_player_avfoundation
+  # video_player_avfoundation:
+  #   url: https://github.com/sundarakaku/flutter-plugins.git
+  #   ref: sundar-develop-video-player
+  #   path: packages/video_player/video_player_avfoundation
   video_player_platform_interface: 
     url: https://github.com/sundarakaku/flutter-plugins.git
     ref: sundar-develop-video-player
     path: packages/video_player/video_player_platform_interface
-  video_player_web:
-    url: https://github.com/sundarakaku/flutter-plugins.git
-    ref: sundar-develop-video-player
-    path: packages/video_player/video_player_web
+  # video_player_web:
+  #   url: https://github.com/sundarakaku/flutter-plugins.git
+  #   ref: sundar-develop-video-player
+  #   path: packages/video_player/video_player_web
 
 dev_dependencies:
   flutter_test:
