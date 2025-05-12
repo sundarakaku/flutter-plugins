@@ -226,6 +226,7 @@ final class VideoPlayer {
               if (!isInitialized) {
                 isInitialized = true;
                 sendInitialized();
+                updateAvailableVideoQualities(exoPlayer.getCurrentTracks());
               }
             } else if (playbackState == Player.STATE_ENDED) {
               Map<String, Object> event = new HashMap<>();
@@ -247,41 +248,72 @@ final class VideoPlayer {
           }
 
           // added by Sundar
-          public void onTracksInfoChanged(TracksInfo tracksInfo) {
-            // System.out.println("onTracksInfoChanged called");
-            if(qualities == null){
-              qualities = new ArrayList<VideoQuality>();
-            }
-            for (TrackGroupInfo groupInfo : tracksInfo.getTrackGroupInfos()) {
-              // Group level information.
-              @C.TrackType int trackType = groupInfo.getTrackType();
-              boolean trackInGroupIsSelected = groupInfo.isSelected();
-              boolean trackInGroupIsSupported = groupInfo.isSupported();
-              TrackGroup group = groupInfo.getTrackGroup();
-              for (int i = 0; i < group.length; i++) {
-                // Individual track information.
-                boolean isSupported = groupInfo.isTrackSupported(i);
-                boolean isSelected = groupInfo.isTrackSelected(i);
-                Format trackFormat = group.getFormat(i);
-                try{
-                  int averageBitrage = trackFormat.averageBitrate;
-                  int peakBitrate = trackFormat.peakBitrate;
-                  int bitrate = trackFormat.bitrate;
-                  int height = trackFormat.height;
-                  int width = trackFormat.width;
-                  int selectionFlags = trackFormat.selectionFlags;
-                  if(bitrate > 0 && height > 0){
-                    addVideoQuality(bitrate, width, height);
-                  }
-                  // System.out.println("averageBitrage,peakBitrate,bitrate, height, width, selectionFlags"+averageBitrage+","+peakBitrate+","+bitrate+","+height+","+width+","+selectionFlags);
-                }catch(Exception e){
-                  e.printStackTrace();
-                }
-              }
+          // public void onTracksInfoChanged(TracksInfo tracksInfo) {
+          //   // System.out.println("onTracksInfoChanged called");
+          //   if(qualities == null){
+          //     qualities = new ArrayList<VideoQuality>();
+          //   }
+          //   for (TrackGroupInfo groupInfo : tracksInfo.getTrackGroupInfos()) {
+          //     // Group level information.
+          //     @C.TrackType int trackType = groupInfo.getTrackType();
+          //     boolean trackInGroupIsSelected = groupInfo.isSelected();
+          //     boolean trackInGroupIsSupported = groupInfo.isSupported();
+          //     TrackGroup group = groupInfo.getTrackGroup();
+          //     for (int i = 0; i < group.length; i++) {
+          //       // Individual track information.
+          //       boolean isSupported = groupInfo.isTrackSupported(i);
+          //       boolean isSelected = groupInfo.isTrackSelected(i);
+          //       Format trackFormat = group.getFormat(i);
+          //       try{
+          //         int averageBitrage = trackFormat.averageBitrate;
+          //         int peakBitrate = trackFormat.peakBitrate;
+          //         int bitrate = trackFormat.bitrate;
+          //         int height = trackFormat.height;
+          //         int width = trackFormat.width;
+          //         int selectionFlags = trackFormat.selectionFlags;
+          //         if(bitrate > 0 && height > 0){
+          //           addVideoQuality(bitrate, width, height);
+          //         }
+          //         // System.out.println("averageBitrage,peakBitrate,bitrate, height, width, selectionFlags"+averageBitrage+","+peakBitrate+","+bitrate+","+height+","+width+","+selectionFlags);
+          //       }catch(Exception e){
+          //         e.printStackTrace();
+          //       }
+          //     }
+          //   }
+
+          //   // printQualities();
+          // }
+
+          private void updateAvailableVideoQualities(Tracks tracks) {
+            if (qualities == null) {
+                qualities = new ArrayList<>();
+            } else {
+                qualities.clear(); // Optional: clear previous entries
             }
 
+            for (Tracks.Group group : tracks.getGroups()) {
+                if (group.getType() == C.TRACK_TYPE_VIDEO) {
+                    for (int i = 0; i < group.length; i++) {
+                        if (group.isTrackSupported(i)) {
+                            Format format = group.getTrackFormat(i);
+                            try {
+                                int bitrate = format.bitrate;
+                                int height = format.height;
+                                int width = format.width;
+                                if (bitrate > 0 && height > 0) {
+                                    addVideoQuality(bitrate, width, height);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Optionally: print or log qualities here
             // printQualities();
-          }
+        }
 
           public void onVideoSizeChanged(TracksInfo tracksInfo) {
             // System.out.println("onVideoSizeChanged called");
@@ -448,7 +480,7 @@ final class VideoPlayer {
     return exoPlayer.getCurrentPosition();
   }
 
-    List getQualities(){
+    List getQualities(){  
     List<Integer> q = new ArrayList<Integer>();
 
     if(qualities != null){
