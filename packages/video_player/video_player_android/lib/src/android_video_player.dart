@@ -76,13 +76,13 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<void> play(int textureId) {
-    print("DART:video_player_android in play ");
+    // print("DART:video_player_android in play ");
     return _api.play(TextureMessage(textureId: textureId));
   }
 
   @override
   Future<void> pause(int textureId) {
-    print("DART:video_player_android in pause ");
+    // print("DART:video_player_android in pause ");
 
     return _api.pause(TextureMessage(textureId: textureId));
   }
@@ -122,11 +122,11 @@ class AndroidVideoPlayer extends VideoPlayerPlatform {
 
   @override
   Future<List> getQualities(int textureId) async {
-    print("DART:video_player_android in getQualities ");
+    // print("DART:video_player_android in getQualities ");
     final QualitiesListMessage response =
         await _api.qualities(TextureMessage(textureId: textureId));
 
-    print("DART:video_player_android in getQualities response.qualities ");
+    // print("DART:video_player_android in getQualities response.qualities ");
 
     return response.qualities;
   }

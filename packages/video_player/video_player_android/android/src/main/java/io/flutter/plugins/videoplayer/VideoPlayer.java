@@ -215,7 +215,7 @@ final class VideoPlayer {
         new Listener() {
           private boolean isBuffering = false;
           public void setBuffering(boolean buffering) {
-            System.out.println("sundar setBuffering :"+buffering);
+            // System.out.println("sundar setBuffering :"+buffering);
 
             if (isBuffering != buffering) {
               isBuffering = buffering;
@@ -227,16 +227,16 @@ final class VideoPlayer {
 
           @Override
           public void onPlaybackStateChanged(final int playbackState) {
-            System.out.println("sundar onPlaybackStateChanged :"+playbackState);
+            // System.out.println("sundar onPlaybackStateChanged :"+playbackState);
             if (playbackState == Player.STATE_BUFFERING) {
               setBuffering(true);
               sendBufferingUpdate();
             } else if (playbackState == Player.STATE_READY) {
-              System.out.println("onPlaybackStateChanged : Player.STATE_READY");
+              // System.out.println("onPlaybackStateChanged : Player.STATE_READY");
               if (!isInitialized) {
                 isInitialized = true;
                 sendInitialized();
-                System.out.println("onPlaybackStateChanged : before calling updateAvailableVideoQualities");
+                // System.out.println("onPlaybackStateChanged : before calling updateAvailableVideoQualities");
                 // updateAvailableVideoQualities(exoPlayer.getCurrentTracks());
                 updateAvailableVideoQualities((DefaultTrackSelector) exoPlayer.getTrackSelector());
 
@@ -262,7 +262,7 @@ final class VideoPlayer {
 
           // added by Sundar
           public void onTracksInfoChanged(TracksInfo tracksInfo) {
-            System.out.println("sundar onTracksInfoChanged called");
+            // System.out.println("sundar onTracksInfoChanged called");
             if(qualities == null){
               qualities = new ArrayList<VideoQuality>();
             }
@@ -299,18 +299,18 @@ final class VideoPlayer {
 
           private void updateAvailableVideoQualities(DefaultTrackSelector trackSelector) {
               MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
-              System.out.println("sundar updateAvailableVideoQualities with MappedTrackInfo: " + mappedTrackInfo);
+              // System.out.println("sundar updateAvailableVideoQualities with MappedTrackInfo: " + mappedTrackInfo);
 
               if (mappedTrackInfo == null) {
-                  System.out.println("sundar updateAvailableVideoQualities: mappedTrackInfo is null");
+                  // System.out.println("sundar updateAvailableVideoQualities: mappedTrackInfo is null");
                   return;
               }
 
               if (qualities == null) {
-                  System.out.println("sundar updateAvailableVideoQualities: qualities is null");
+                  // System.out.println("sundar updateAvailableVideoQualities: qualities is null");
                   qualities = new ArrayList<>();
               } else {
-                  System.out.println("sundar updateAvailableVideoQualities: qualities is NOT null");
+                  // System.out.println("sundar updateAvailableVideoQualities: qualities is NOT null");
                   qualities.clear();
               }
 
@@ -326,7 +326,7 @@ final class VideoPlayer {
                                   int height = format.height;
                                   int width = format.width;
                                   if (bitrate > 0 && height > 0) {
-                                      System.out.println("sundar addVideoQuality calling: " + bitrate + ", " + width + ", " + height);
+                                      // System.out.println("sundar addVideoQuality calling: " + bitrate + ", " + width + ", " + height);
                                       addVideoQuality(bitrate, width, height);
                                   }
                               } catch (Exception e) {
@@ -381,7 +381,7 @@ final class VideoPlayer {
         //     // printQualities();
         // }
           public void onVideoSizeChanged(TracksInfo tracksInfo) {
-            System.out.println("onVideoSizeChanged called");
+            // System.out.println("onVideoSizeChanged called");
             for (TrackGroupInfo groupInfo : tracksInfo.getTrackGroupInfos()) {
               // Group level information.
               @C.TrackType int trackType = groupInfo.getTrackType();
@@ -430,7 +430,7 @@ final class VideoPlayer {
           int height = trackFormat.height;
           int width = trackFormat.width;
           int selectionFlags = trackFormat.selectionFlags;
-          System.out.println("averageBitrage,peakBitrate,bitrate, height, width, selectionFlags,isSupported,isSelected"+averageBitrage+","+peakBitrate+","+bitrate+","+height+","+width+","+selectionFlags+","+isSupported+","+isSelected);
+          // System.out.println("averageBitrage,peakBitrate,bitrate, height, width, selectionFlags,isSupported,isSelected"+averageBitrage+","+peakBitrate+","+bitrate+","+height+","+width+","+selectionFlags+","+isSupported+","+isSelected);
 
         }catch(Exception e){
           e.printStackTrace();
@@ -440,13 +440,13 @@ final class VideoPlayer {
   }
 
     void getCurrentTrackInfo() {
-      System.out.println("currentTracksInfo-----");
+      // System.out.println("currentTracksInfo-----");
 
       DefaultTrackSelector trackSelector = (DefaultTrackSelector) exoPlayer.getTrackSelector();
       MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
 
       if (mappedTrackInfo == null) {
-          System.out.println("MappedTrackInfo is null");
+          // System.out.println("MappedTrackInfo is null");
           return;
       }
 
@@ -473,16 +473,16 @@ final class VideoPlayer {
                       int width = trackFormat.width;
                       int selectionFlags = trackFormat.selectionFlags;
 
-                      System.out.println(
-                              "Track info => averageBitrate: " + averageBitrate +
-                              ", peakBitrate: " + peakBitrate +
-                              ", bitrate: " + bitrate +
-                              ", height: " + height +
-                              ", width: " + width +
-                              ", selectionFlags: " + selectionFlags +
-                              ", isSupported: " + isSupported +
-                              ", isSelected: " + isSelected
-                      );
+                      // System.out.println(
+                      //         "Track info => averageBitrate: " + averageBitrate +
+                      //         ", peakBitrate: " + peakBitrate +
+                      //         ", bitrate: " + bitrate +
+                      //         ", height: " + height +
+                      //         ", width: " + width +
+                      //         ", selectionFlags: " + selectionFlags +
+                      //         ", isSupported: " + isSupported +
+                      //         ", isSelected: " + isSelected
+                      // );
                   } catch (Exception e) {
                       e.printStackTrace();
                   }
