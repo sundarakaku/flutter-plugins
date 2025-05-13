@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import android.util.Log;
+
 
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.TracksInfo;
@@ -207,8 +209,9 @@ final class VideoPlayer {
     exoPlayer.addListener(
         new Listener() {
           private boolean isBuffering = false;
-
           public void setBuffering(boolean buffering) {
+            System.out.println("sundar setBuffering :"+buffering);
+
             if (isBuffering != buffering) {
               isBuffering = buffering;
               Map<String, Object> event = new HashMap<>();
@@ -219,7 +222,7 @@ final class VideoPlayer {
 
           @Override
           public void onPlaybackStateChanged(final int playbackState) {
-            System.out.println("onPlaybackStateChanged :"+playbackState);
+            System.out.println("sundar onPlaybackStateChanged :"+playbackState);
             if (playbackState == Player.STATE_BUFFERING) {
               setBuffering(true);
               sendBufferingUpdate();
@@ -251,48 +254,48 @@ final class VideoPlayer {
           }
 
           // added by Sundar
-          // public void onTracksInfoChanged(TracksInfo tracksInfo) {
-          //   // System.out.println("onTracksInfoChanged called");
-          //   if(qualities == null){
-          //     qualities = new ArrayList<VideoQuality>();
-          //   }
-          //   for (TrackGroupInfo groupInfo : tracksInfo.getTrackGroupInfos()) {
-          //     // Group level information.
-          //     @C.TrackType int trackType = groupInfo.getTrackType();
-          //     boolean trackInGroupIsSelected = groupInfo.isSelected();
-          //     boolean trackInGroupIsSupported = groupInfo.isSupported();
-          //     TrackGroup group = groupInfo.getTrackGroup();
-          //     for (int i = 0; i < group.length; i++) {
-          //       // Individual track information.
-          //       boolean isSupported = groupInfo.isTrackSupported(i);
-          //       boolean isSelected = groupInfo.isTrackSelected(i);
-          //       Format trackFormat = group.getFormat(i);
-          //       try{
-          //         int averageBitrage = trackFormat.averageBitrate;
-          //         int peakBitrate = trackFormat.peakBitrate;
-          //         int bitrate = trackFormat.bitrate;
-          //         int height = trackFormat.height;
-          //         int width = trackFormat.width;
-          //         int selectionFlags = trackFormat.selectionFlags;
-          //         if(bitrate > 0 && height > 0){
-          //           addVideoQuality(bitrate, width, height);
-          //         }
-          //         // System.out.println("averageBitrage,peakBitrate,bitrate, height, width, selectionFlags"+averageBitrage+","+peakBitrate+","+bitrate+","+height+","+width+","+selectionFlags);
-          //       }catch(Exception e){
-          //         e.printStackTrace();
-          //       }
-          //     }
-          //   }
+          public void onTracksInfoChanged(TracksInfo tracksInfo) {
+            System.out.println("sundar onTracksInfoChanged called");
+            if(qualities == null){
+              qualities = new ArrayList<VideoQuality>();
+            }
+            for (TrackGroupInfo groupInfo : tracksInfo.getTrackGroupInfos()) {
+              // Group level information.
+              @C.TrackType int trackType = groupInfo.getTrackType();
+              boolean trackInGroupIsSelected = groupInfo.isSelected();
+              boolean trackInGroupIsSupported = groupInfo.isSupported();
+              TrackGroup group = groupInfo.getTrackGroup();
+              for (int i = 0; i < group.length; i++) {
+                // Individual track information.
+                boolean isSupported = groupInfo.isTrackSupported(i);
+                boolean isSelected = groupInfo.isTrackSelected(i);
+                Format trackFormat = group.getFormat(i);
+                try{
+                  int averageBitrage = trackFormat.averageBitrate;
+                  int peakBitrate = trackFormat.peakBitrate;
+                  int bitrate = trackFormat.bitrate;
+                  int height = trackFormat.height;
+                  int width = trackFormat.width;
+                  int selectionFlags = trackFormat.selectionFlags;
+                  if(bitrate > 0 && height > 0){
+                    addVideoQuality(bitrate, width, height);
+                  }
+                  // System.out.println("averageBitrage,peakBitrate,bitrate, height, width, selectionFlags"+averageBitrage+","+peakBitrate+","+bitrate+","+height+","+width+","+selectionFlags);
+                }catch(Exception e){
+                  e.printStackTrace();
+                }
+              }
+            }
 
-          //   // printQualities();
-          // }
+            // printQualities();
+          }
 
           private void updateAvailableVideoQualities(Tracks tracks) {
 
-            System.out.println("updateAvailableVideoQualities : "+tracks);
+            System.out.println("sundar updateAvailableVideoQualities : "+tracks);
 
             if (qualities == null) {
-                System.out.println("updateAvailableVideoQualities : qualities is null");
+                System.out.println("sundar updateAvailableVideoQualities : qualities is null");
                 qualities = new ArrayList<>();
             } else {
                 System.out.println("updateAvailableVideoQualities : qualities is NOT null");
@@ -310,7 +313,7 @@ final class VideoPlayer {
                                 int width = format.width;
                                 if (bitrate > 0 && height > 0) {
 
-                                    System.out.println("addVideoQuality calling : "+bitrate +", "+ width+"," + height);
+                                    System.out.println("sundar addVideoQuality calling : "+bitrate +", "+ width+"," + height);
   
                                     addVideoQuality(bitrate, width, height);
                                 }
@@ -327,7 +330,7 @@ final class VideoPlayer {
         }
 
           public void onVideoSizeChanged(TracksInfo tracksInfo) {
-            // System.out.println("onVideoSizeChanged called");
+            System.out.println("onVideoSizeChanged called");
             for (TrackGroupInfo groupInfo : tracksInfo.getTrackGroupInfos()) {
               // Group level information.
               @C.TrackType int trackType = groupInfo.getTrackType();

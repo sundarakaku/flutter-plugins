@@ -448,6 +448,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   /// has been sent to the platform, not when playback itself is totally
   /// finished.
   Future<void> play() async {
+    print("DART:Video_player in play()");
     if (value.position == value.duration) {
       await seekTo(const Duration());
     }
@@ -464,6 +465,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// Pauses the video.
   Future<void> pause() async {
+    print("DART:Video_player in pause()");
     value = value.copyWith(isPlaying: false);
     await _applyPlayPause();
   }
@@ -543,6 +545,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
 
   /// The qualities of the current video. - Added by Sundara Kaku
   Future<List?> get qualities async {
+     print("DART:video_player in get qualities ");
     if (_isDisposed) {
       return null;
     }
