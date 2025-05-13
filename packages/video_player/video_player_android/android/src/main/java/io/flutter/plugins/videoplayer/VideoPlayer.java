@@ -219,13 +219,16 @@ final class VideoPlayer {
 
           @Override
           public void onPlaybackStateChanged(final int playbackState) {
+            System.out.println("onPlaybackStateChanged :"+playbackState);
             if (playbackState == Player.STATE_BUFFERING) {
               setBuffering(true);
               sendBufferingUpdate();
             } else if (playbackState == Player.STATE_READY) {
+              System.out.println("onPlaybackStateChanged : Player.STATE_READY");
               if (!isInitialized) {
                 isInitialized = true;
                 sendInitialized();
+                System.out.println("onPlaybackStateChanged : before calling updateAvailableVideoQualities");
                 updateAvailableVideoQualities(exoPlayer.getCurrentTracks());
               }
             } else if (playbackState == Player.STATE_ENDED) {
@@ -285,9 +288,14 @@ final class VideoPlayer {
           // }
 
           private void updateAvailableVideoQualities(Tracks tracks) {
+
+            System.out.println("updateAvailableVideoQualities : "+tracks);
+
             if (qualities == null) {
+                System.out.println("updateAvailableVideoQualities : qualities is null");
                 qualities = new ArrayList<>();
             } else {
+                System.out.println("updateAvailableVideoQualities : qualities is NOT null");
                 qualities.clear(); // Optional: clear previous entries
             }
 
@@ -301,6 +309,9 @@ final class VideoPlayer {
                                 int height = format.height;
                                 int width = format.width;
                                 if (bitrate > 0 && height > 0) {
+
+                                    System.out.println("addVideoQuality calling : "+bitrate +", "+ width+"," + height);
+  
                                     addVideoQuality(bitrate, width, height);
                                 }
                             } catch (Exception e) {
@@ -384,7 +395,7 @@ final class VideoPlayer {
     if(!found){
       VideoQuality vq = new VideoQuality(bitrate, width, height);
       qualities.add(vq);
-      // printQualities();
+      printQualities();
     }
   }
 
